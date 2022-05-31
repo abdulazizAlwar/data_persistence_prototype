@@ -6,7 +6,7 @@ using System.IO;
 public class SaveSystem : MonoBehaviour
 {
     [System.Serializable]
-    class SaveData
+    public class SaveData
     {
         public string PlayerName;
     }
