@@ -27,6 +27,11 @@ public class GameManager : MonoBehaviour
         PlayerName = SaveSystem.LoadSessionFromJson(SavePath);
     }
 
+    public void TriggerSave()
+    {
+        SaveSystem.SaveSessionToJson(SavePath, PlayerName);
+    }
+
     public void QuitGameActions()
     {
         SaveSystem.SaveSessionToJson(SavePath, PlayerName);

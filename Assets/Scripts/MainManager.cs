@@ -17,6 +17,7 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     // UI
+    public Text NameText;
     public Text ScoreText;
     public GameObject GameOverText;
 
@@ -39,11 +40,18 @@ public class MainManager : MonoBehaviour
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
+            else if (Input.GetKeyDown("m"))
+            {
+                SceneManager.LoadScene(0);
+            }
+
         }
     }
 
     void StartGameElements()
     {
+        NameText.text = $"{GameManager.Instance.PlayerName}";
+
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
 
@@ -82,6 +90,7 @@ public class MainManager : MonoBehaviour
 
     public void GameOver()
     {
+        GameManager.Instance.TriggerSave();
         m_GameOver = true;
         GameOverText.SetActive(true);
     }

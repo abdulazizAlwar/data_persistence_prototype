@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -12,28 +13,39 @@ using UnityEditor;
 [DefaultExecutionOrder(1000)]
 public class MainMenuUIHandler : MonoBehaviour
 {
+    public TMP_InputField NameInputField;
+    string inputedName = "3anfooz";
 
-    public void Start()
+    public void Awake()
     {
-        Debug.Log(GameManager.Instance.PlayerName);
+        NameInputField.text = GameManager.Instance.PlayerName;
     }
 
     public void StartNewGame()
     {
-        GameManager.Instance.PlayerName = "NameFromInput";
-        SceneManager.LoadScene(1);
+        StoreNameinGameManager(inputedName);
         Debug.Log(GameManager.Instance.PlayerName);
+        SceneManager.LoadScene(1);
     }
 
     public void ExitSession()
     {
         GameManager.Instance.QuitGameActions();
-        Debug.Log(GameManager.Instance.PlayerName);
 
         #if UNITY_EDITOR
         EditorApplication.ExitPlaymode();
         #else
         Application.Quit();
         #endif
+    }
+
+    public void ReadNameInput()
+    {
+        inputedName = NameInputField.text;
+    }
+
+    public void StoreNameinGameManager(string inputedName)
+    {
+        GameManager.Instance.PlayerName = inputedName;
     }
 }
