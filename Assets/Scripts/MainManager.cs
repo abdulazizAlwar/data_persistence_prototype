@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class MainManager : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class MainManager : MonoBehaviour
     // UI
     public Text NameText;
     public Text ScoreText;
+    public Text HighScoreText;
+
     public GameObject GameOverText;
 
 
@@ -51,6 +54,7 @@ public class MainManager : MonoBehaviour
     void StartGameElements()
     {
         NameText.text = $"{GameManager.Instance.PlayerName}";
+        HighScoreText.text = MainMenuUIHandler.DisplayHighScore();
 
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
@@ -86,10 +90,18 @@ public class MainManager : MonoBehaviour
     {
         m_Points += point;
         ScoreText.text = $"Score : {m_Points}";
+
+        if (m_Points < GameManager.Instance.FindHighestScoreValue())
+        { HighScoreText.text = MainMenuUIHandler.DisplayHighScore(); }
+        else
+        { HighScoreText.text = $"{GameManager.Instance.PlayerName}: {m_Points}"; }
+
     }
 
     public void GameOver()
     {
+        GameManager.Instance.HighScoresDict[GameManager.Instance.PlayerName] = m_Points;
+
         GameManager.Instance.TriggerSave();
         m_GameOver = true;
         GameOverText.SetActive(true);

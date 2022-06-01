@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     string SavePath;
+    SaveSystem.SaveData SaveDataObject;
     public string PlayerName;
+    public Dictionary<string, int> HighScoresDict = new Dictionary<string, int>();
 
     private void Awake()
     {
@@ -24,17 +27,46 @@ public class GameManager : MonoBehaviour
     void StartState()
     {
         SavePath = $"{Application.persistentDataPath}/savefile.json";
-        PlayerName = SaveSystem.LoadSessionFromJson(SavePath);
-    }
+        Debug.Log(SavePath);
 
-    public void TriggerSave()
-    {
-        SaveSystem.SaveSessionToJson(SavePath, PlayerName);
+        SaveDataObject = SaveSystem.LoadSessionFromJson(SavePath);
+
+        PlayerName = SaveDataObject.PlayerName;
+        HighScoresDict = SaveDataObject.HighScoresDict;
+
+        HighScoresDict = new Dictionary<string, int>(){
+                {"3antar", 2}
+        };
+
+        LoadHighScores();
     }
 
     public void QuitGameActions()
     {
-        SaveSystem.SaveSessionToJson(SavePath, PlayerName);
+        TriggerSave();
     }
 
+    public void TriggerSave()
+    {
+        SaveDataObject.PlayerName = PlayerName;
+        SaveDataObject.HighScoresDict = HighScoresDict;
+        SaveSystem.SaveSessionToJson(SavePath, SaveDataObject);
+    }
+
+    public void LoadHighScores()
+    {
+        HighScoresDict.Add("3abla", 1);
+    }
+
+    public string FindHighestScoreName()
+    {
+        string HighestScoreKey = HighScoresDict.OrderByDescending(x => x.Value).First().Key;
+        return HighestScoreKey;
+    }
+
+    public int FindHighestScoreValue()
+    {
+        int HighestScoreValue = HighScoresDict.Values.Max();
+        return HighestScoreValue;
+    }
 }

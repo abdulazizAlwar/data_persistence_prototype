@@ -9,34 +9,42 @@ public class SaveSystem : MonoBehaviour
     public class SaveData
     {
         public string PlayerName;
+        public Dictionary<string, int> HighScoresDict;
     }
 
-    public static void SaveSessionToJson(string SavePath, string PlayerName)
+    public static void SaveSessionToJson(string SavePath, SaveData SaveDataObject)
     {
         SaveData data = new SaveData();
-        data.PlayerName = PlayerName;
+        data.PlayerName = SaveDataObject.PlayerName;
+        data.HighScoresDict = SaveDataObject.HighScoresDict;
 
         string json = JsonUtility.ToJson(data);
 
         File.WriteAllText(SavePath, json);
     }
 
-    public static string LoadSessionFromJson(string SavePath)
+    public static SaveData LoadSessionFromJson(string SavePath)
     {
+        SaveData LoadedDataObject = new SaveData();
+
         if (File.Exists(SavePath))
         {
             string json = File.ReadAllText(SavePath);
             SaveData data = JsonUtility.FromJson<SaveData>(json);
 
-            string PlayerName = data.PlayerName;
-
-            return PlayerName;
+            LoadedDataObject.PlayerName = data.PlayerName;
+            LoadedDataObject.HighScoresDict = data.HighScoresDict;
         }
 
         else 
         {
-            return "...";
+            LoadedDataObject.PlayerName = "...";
+            LoadedDataObject.HighScoresDict = new Dictionary<string, int>(){
+                {"3antar", 500}
+            };
         }
+
+        return LoadedDataObject;
     }
 
 }

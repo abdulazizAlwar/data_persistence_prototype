@@ -509,6 +509,7 @@ MonoBehaviour:
   Ball: {fileID: 177912862}
   NameText: {fileID: 1541685195}
   ScoreText: {fileID: 188020406}
+  HighScoreText: {fileID: 2078529056}
   GameOverText: {fileID: 474497238}
 --- !u!1 &455529321
 GameObject:
@@ -1607,3 +1608,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769ebdfcfbc38be498d978353380cd43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NameText: {fileID: 0}

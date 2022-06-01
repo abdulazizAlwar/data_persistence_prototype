@@ -13,12 +13,14 @@ using UnityEditor;
 [DefaultExecutionOrder(1000)]
 public class MainMenuUIHandler : MonoBehaviour
 {
+    public TMP_Text HighScoreText;
     public TMP_InputField NameInputField;
     string inputedName = "3anfooz";
 
     public void Awake()
     {
         NameInputField.text = GameManager.Instance.PlayerName;
+        HighScoreText.text = DisplayHighScore();
     }
 
     public void StartNewGame()
@@ -47,5 +49,14 @@ public class MainMenuUIHandler : MonoBehaviour
     public void StoreNameinGameManager(string inputedName)
     {
         GameManager.Instance.PlayerName = inputedName;
+    }
+
+    public static string DisplayHighScore()
+    {
+        string HighestScoreKey = GameManager.Instance.FindHighestScoreName();
+        string highestScoreString = $"{HighestScoreKey}: {GameManager.Instance.HighScoresDict[HighestScoreKey]}";
+
+        return highestScoreString;
+
     }
 }
